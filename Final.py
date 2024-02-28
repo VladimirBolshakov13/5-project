@@ -1,7 +1,9 @@
-# 108273025
-BASE_TEN = 10
-OPEN_BRACKET = "["
-CLOSE_BRACKET = "]"
+# 108291492
+BASE = 10
+START_OF_SEQUENCE = "["
+END_OF_SEQUENCE = "]"
+DIGIT_RANGE = range(ord('0'), ord('9') + 1)
+
 
 
 def decode_instructions(encoded_instructions: str) -> str:
@@ -21,17 +23,17 @@ def decode_instructions(encoded_instructions: str) -> str:
     "aaabcbc"
     """
 
-    stack: list[str] = []  # Список для хранения элементов стека
-    num = 0
-    temp_str = ""
+    stack: list = []  # Список для хранения элементов стека
+    num: int = 0
+    temp_str: str = ""
     for char in encoded_instructions:
-        if char in "0123456789":
-            num = num * BASE_TEN + int(char)
-        elif char == OPEN_BRACKET:
+        if ord(char) in DIGIT_RANGE:
+            num = num * BASE + int(char)
+        elif char == START_OF_SEQUENCE:
             stack.append((temp_str, num))
             temp_str = ""
             num = 0
-        elif char == CLOSE_BRACKET:
+        elif char == END_OF_SEQUENCE:
             prev_str, repeat_times = stack.pop()
             temp_str = prev_str + temp_str * repeat_times
         else:
@@ -44,3 +46,4 @@ if __name__ == "__main__":
     encoded_instructions = input()
     decoded_instructions = decode_instructions(encoded_instructions)
     print(decoded_instructions)
+
